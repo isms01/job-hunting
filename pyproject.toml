@@ -1,0 +1,17 @@
+[project]
+name = "job-hunting"
+version = "0.1.0"
+description = "転職活動用の資料をAIと共同作成するリポジトリ"
+requires-python = ">=3.11"
+
+dependencies = [
+    "mlx-whisper>=0.4.0",
+    ]
+
+    [tool.uv]
+    dev-dependencies = []
+
+    [build-system]
+    requires = ["hatchling"]
+    build-backend = "hatchling.build"
+    
