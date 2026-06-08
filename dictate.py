@@ -17,18 +17,17 @@ M1 Mac 最適化: mlx-whisper を使用
     uv run dictate.py
 """
 
-import sys
+import argparse
+import datetime
 import os
 import queue
-import threading
-import datetime
-import argparse
-import tempfile
-import wave
+import sys
 
-import numpy as np
-import sounddevice as sd
 import mlx_whisper
+import numpy as np
+import scipy.signal as signal
+import sounddevice as sd
+import soundfile as sf
 
 # ---- 設定 ----------------------------------------------------------------
 MODEL_ID = "mlx-community/whisper-large-v3-mlx"
@@ -41,7 +40,6 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "input", "dictations")
 def record_until_enter(sample_rate: int = SAMPLE_RATE) -> np.ndarray:
     """Enter キーを押すまで録音し、音声データ (float32) を返す。"""
     audio_queue: queue.Queue = queue.Queue()
-    stop_event = threading.Event()
 
     def callback(indata, frames, time_info, status):
         if status:
@@ -109,13 +107,11 @@ def main():
 
     if args.file:
         # ファイルモード: 既存音声を文字起こし
-        import soundfile as sf
         audio, sr = sf.read(args.file, dtype="float32")
         if audio.ndim > 1:
             audio = audio.mean(axis=1)  # ステレオ → モノラル
         if sr != SAMPLE_RATE:
             # 簡易リサンプル (精度が必要なら librosa.resample を使うこと)
-            import scipy.signal as signal
             audio = signal.resample(audio, int(len(audio) * SAMPLE_RATE / sr))
     else:
         # マイク録音モード
