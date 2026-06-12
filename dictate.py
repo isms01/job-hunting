@@ -30,10 +30,10 @@ import sounddevice as sd
 import soundfile as sf
 
 # ---- 設定 ----------------------------------------------------------------
-MODEL_ID = "mlx-community/whisper-large-v3-mlx"
+MODEL_ID = "mlx-community/whisper-large-v3-turbo"
 SAMPLE_RATE = 16000          # Whisper が要求するサンプルレート
 CHANNELS = 1
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "input", "dictations")
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output", "dictations")
 # --------------------------------------------------------------------------
 
 
@@ -125,6 +125,7 @@ def main():
 
     filepath = save_text(text)
     print(f"\n--- 文字起こし結果 ---\n{text}\n")
+    print(f"文字数: {len(text)} 文字")
     print(f"保存先: {filepath}")
 
 
