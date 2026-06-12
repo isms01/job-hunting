@@ -20,3 +20,21 @@ job-hunting/
 ## 開発環境
 
 - VS Code + Peacock（ウィンドウカラー: `#1a237e`）
+
+## ワークフロー
+
+### 職務経歴書作成フロー
+
+```
+音声入力（記憶の棚卸し）
+    ↓ dictate.py（MLX Whisper でローカル文字起こし）
+output/dictations/（生テキスト蓄積）
+    ↓ Claude Code に一括処理させる
+output/career-history.md（職務経歴書）
+```
+
+1. `dictate.py` を実行し、2016年以降の経験・出来事を時系列・粒度を気にせず音声で全部吐き出す
+2. `output/dictations/` に蓄積した全テキストと `input/` の既存職務経歴書を Claude Code に読ませる
+3. 既存フォーマットを参照しながら職務経歴書を生成・更新する
+
+> 中間的な構造化ステップは設けず、生テキスト → 成果物の2ステップで管理する。
