@@ -103,6 +103,11 @@ def main():
         metavar="AUDIO_FILE",
         help="録音済みの音声ファイルを文字起こしする場合に指定 (WAV/MP3 等)",
     )
+    parser.add_argument(
+        "--nowrite", "-n",
+        action="store_true",
+        help="ファイル出力したくない場合に指定 (デバッグ用)。指定するとファイルに保存しません",
+    )
     args = parser.parse_args()
 
     if args.file:
@@ -123,6 +128,10 @@ def main():
         print("文字起こし結果が空でした。")
         sys.exit(1)
 
+    if args.nowrite:
+        print(f"\n--- 文字起こし結果 ---\n{text}\n")
+        print(f"文字数: {len(text)} 文字")
+        return
     filepath = save_text(text)
     print(f"\n--- 文字起こし結果 ---\n{text}\n")
     print(f"文字数: {len(text)} 文字")
